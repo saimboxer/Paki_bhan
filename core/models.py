@@ -29,6 +29,10 @@ class Country(models.Model):
     is_shipping_country = models.BooleanField(
         _("Is shipping country"), default=False, db_index=True)
 
+    class Meta:
+        verbose_name = _("country")
+        verbose_name_plural = _("countries")
+
     def __str__(self):
         return self.printable_name or self.name
 
@@ -59,6 +63,10 @@ class City(models.Model):
     created_by = models.CharField(max_length=100)
     updated_at = models.DateTimeField()
     updated_by = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = _("city")
+        verbose_name_plural = _("cities")
 
     def __str__(self):	
         return self.city_name
@@ -91,6 +99,9 @@ class VehicleClass(models.Model):
     def __str__(self):	
         return self.vehicle
 
+    class Meta:
+        verbose_name = _("vehicle class")
+        verbose_name_plural = _("vehicle classes")
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
