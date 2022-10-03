@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 class Country(models.Model):
     """
-        `ISO 3166 Country Codes <https://www.iso.org/iso-3166-country-codes.html>`_
+        `iiISO 3166 Country Codes <https://www.iso.org/iso-3166-country-codes.html>`_
         The field names are a bit awkward, but kept for backwards compatibility.
         pycountry's syntax of alpha2, alpha3, name and official_name seems sane.
         """
