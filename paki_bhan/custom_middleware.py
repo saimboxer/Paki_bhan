@@ -1,6 +1,5 @@
 from django.db.models import signals
-from django.utils.functional import curry
-
+from functools import partial as curry
 
 class CustomMiddleware(object):
 
@@ -30,4 +29,4 @@ class CustomMiddleware(object):
         if not getattr(instance, 'created_by', None):
             instance.created_by = user
         if hasattr(instance, 'updated_by'):
-            instance.modified_by = user
+            instance.updated_by = user

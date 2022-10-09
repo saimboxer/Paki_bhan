@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'paki_bhan.custom_middleware.CustomMiddleware'
 ]
 
 ROOT_URLCONF = 'paki_bhan.urls'

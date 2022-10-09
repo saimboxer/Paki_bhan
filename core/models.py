@@ -62,10 +62,14 @@ class City(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=20)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(blank=True, null = True)
-    created_by = models.CharField(max_length=100, null=True, blank=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
-    updated_by = models.CharField(max_length=100, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="user_created_city", blank=True, null=True
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="user_updated_city", blank=True, null=True
+    )
 
     class Meta:
         verbose_name = _("city")
@@ -140,9 +144,9 @@ class Platform(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     long = models.FloatField()
     lat = models.FloatField()
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=100)
-    updated_at = models.DateTimeField()
+    updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.CharField(max_length=100)
 
     def __str__(self):	
