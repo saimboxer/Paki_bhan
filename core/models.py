@@ -61,6 +61,7 @@ class Country(models.Model):
 class City(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=20)
+    code = models.CharField(max_length=20, null=True, unique=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
@@ -75,20 +76,20 @@ class City(models.Model):
         verbose_name = _("city")
         verbose_name_plural = _("cities")
 
-    def __str__(self):	
+    def __str__(self):
         return self.name
 
 
 class Vehicle(models.Model):
-    VEHICLE_TYPE_CHOICES = (("Bus" , "Bus"),
-                        ("Train" , "Train"),
-                        ("Tram" , "Tram"))
+    VEHICLE_TYPE_CHOICES = (("Bus", "Bus"),
+                            ("Train", "Train"),
+                            ("Tram", "Tram"))
 
     reg_number = models.CharField(max_length=100)
-    vehicle_type = models.CharField(max_length=5, choices = VEHICLE_TYPE_CHOICES, default = 'Bus' )
+    vehicle_type = models.CharField(max_length=5, choices=VEHICLE_TYPE_CHOICES, default='Bus')
     vhcl_capacity = models.IntegerField()
-    is_cyclespace_available = models.BooleanField(default = True)
-    is_toilet_available = models.BooleanField(default = True)
+    is_cyclespace_available = models.BooleanField(default=True)
+    is_toilet_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_created_vehicle", blank=True, null=True
@@ -98,19 +99,19 @@ class Vehicle(models.Model):
         User, on_delete=models.CASCADE, related_name="user_updated_vehicle", blank=True, null=True
     )
 
-    def __str__(self):	
-        return self.reg_number       
+    def __str__(self):
+        return self.reg_number
 
 
 class VehicleClass(models.Model):
-    CLASS_TYPE_CHOICES = (("GEN" , "General"),
-                        ("SLPR" , "Sleeper"),
-                        ("1AC" , "1AC"),
-                        ("2AC" , "2AC"),
-                        ("3AC" , "3AC"))
+    CLASS_TYPE_CHOICES = (("GEN", "General"),
+                          ("SLPR", "Sleeper"),
+                          ("1AC", "1AC"),
+                          ("2AC", "2AC"),
+                          ("3AC", "3AC"))
 
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    class_type = models.CharField(max_length=5, choices = CLASS_TYPE_CHOICES)
+    class_type = models.CharField(max_length=5, choices=CLASS_TYPE_CHOICES)
     capacity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
@@ -119,22 +120,27 @@ class VehicleClass(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_updated_vehicleclass", blank=True, null=True
-    )  
-    def __str__(self):	
+    )
+    def __str__(self):
         return self.vehicle
 
     class Meta:
         verbose_name = _("vehicle class")
         verbose_name_plural = _("vehicle classes")
 
+
 class Location(models.Model):
-    LOCATION_TYPE_CHOICES = (("STOP" , "Stop"),
-                        ("STATION" , "Train Station"))
+    class TYPE:
+        STOP = "stop"
+        STATION = "station"
+
+    LOCATION_TYPE_CHOICES = ((TYPE.STOP, "Stop"),
+                             (TYPE.STATION, "Train Station"))
 
     name = models.CharField(max_length=100)
-    loc_short_name = models.CharField(max_length=20, blank = True)
+    loc_short_name = models.CharField(max_length=20, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
-    loc_type = models.CharField(max_length=10, choices = LOCATION_TYPE_CHOICES)
+    loc_type = models.CharField(max_length=10, choices=LOCATION_TYPE_CHOICES)
     lat = models.FloatField()
     long = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -164,13 +170,13 @@ class Platform(models.Model):
         User, on_delete=models.CASCADE, related_name="user_updated_platform", blank=True, null=True
     )
 
-    def __str__(self):	
+    def __str__(self):
         return self.name
 
 
 class Route(models.Model):
-    name = models.CharField(max_length=30) 
-    code = models.CharField(max_length=20) #from_Loc_sn - to_Loc_sn
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=20)  # from_Loc_sn - to_Loc_sn
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_created_route", blank=True, null=True
@@ -180,7 +186,7 @@ class Route(models.Model):
         User, on_delete=models.CASCADE, related_name="user_updated_route", blank=True, null=True
     )
 
-    def __str__(self):	
+    def __str__(self):
         return self.name
 
 
@@ -198,11 +204,11 @@ class RouteDetail(models.Model):
         User, on_delete=models.CASCADE, related_name="user_updated_routedetail", blank=True, null=True
     )
 
-    def __str__(self):	
+    def __str__(self):
         return self.route.name
 
     class Meta:
-        unique_together = (('route', 'location'),)  
+        unique_together = (('route', 'location'),)
 
 
 class VehicleSchedule(models.Model):
@@ -219,5 +225,5 @@ class VehicleSchedule(models.Model):
         User, on_delete=models.CASCADE, related_name="user_updated_vehicleschedule", blank=True, null=True
     )
 
-    def __str__(self):	
+    def __str__(self):
         return self.route.name
