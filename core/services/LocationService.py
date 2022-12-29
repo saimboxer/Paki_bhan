@@ -2,7 +2,6 @@ from core.models import Location
 
 
 class LocationService:
-
     def get_locations(self, city_code, location_type=Location.TYPE.STOP):
         locations = Location.objects.filter(city__code=city_code, type=location_type)
         return locations

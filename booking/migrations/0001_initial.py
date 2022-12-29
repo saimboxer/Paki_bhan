@@ -10,30 +10,69 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('core', '0001_initial'),
+        ("core", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Ticket',
+            name="Ticket",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('pnr_no', models.CharField(max_length=20, unique=True)),
-                ('traveller', models.CharField(max_length=100)),
-                ('journey_datetime', models.DateTimeField()),
-                ('is_valid', models.BooleanField(default=True)),
-                ('seatreserved', models.CharField(max_length=20)),
-                ('offer_applied', models.CharField(max_length=20)),
-                ('created_at', models.DateTimeField()),
-                ('created_by', models.CharField(max_length=100)),
-                ('updated_at', models.DateTimeField()),
-                ('updated_by', models.CharField(max_length=100)),
-                ('arrival_location', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='arrival_tickets', to='core.location')),
-                ('dep_location', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='departure_tickets', to='core.location')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('vehicle', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.vehicle')),
-                ('vehicle_class', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.vehicleclass')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("pnr_no", models.CharField(max_length=20, unique=True)),
+                ("traveller", models.CharField(max_length=100)),
+                ("journey_datetime", models.DateTimeField()),
+                ("is_valid", models.BooleanField(default=True)),
+                ("seatreserved", models.CharField(max_length=20)),
+                ("offer_applied", models.CharField(max_length=20)),
+                ("created_at", models.DateTimeField()),
+                ("created_by", models.CharField(max_length=100)),
+                ("updated_at", models.DateTimeField()),
+                ("updated_by", models.CharField(max_length=100)),
+                (
+                    "arrival_location",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="arrival_tickets",
+                        to="core.location",
+                    ),
+                ),
+                (
+                    "dep_location",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="departure_tickets",
+                        to="core.location",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "vehicle",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="core.vehicle"
+                    ),
+                ),
+                (
+                    "vehicle_class",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.vehicleclass",
+                    ),
+                ),
             ],
         ),
     ]

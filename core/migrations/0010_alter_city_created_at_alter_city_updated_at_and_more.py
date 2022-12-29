@@ -7,30 +7,34 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0009_alter_city_created_by_alter_city_updated_by'),
+        ("core", "0009_alter_city_created_by_alter_city_updated_by"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='city',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="city",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='city',
-            name='updated_at',
-            field=models.DateTimeField(auto_now=True, default=django.utils.timezone.now),
+            model_name="city",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='platform',
-            name='created_at',
+            model_name="platform",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True),
         ),
         migrations.AlterField(
-            model_name='platform',
-            name='updated_at',
+            model_name="platform",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

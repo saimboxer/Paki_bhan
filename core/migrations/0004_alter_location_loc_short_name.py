@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0003_alter_location_loc_short_name'),
+        ("core", "0003_alter_location_loc_short_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='location',
-            name='loc_short_name',
+            model_name="location",
+            name="loc_short_name",
             field=models.CharField(blank=True, max_length=20, null=True),
         ),
     ]

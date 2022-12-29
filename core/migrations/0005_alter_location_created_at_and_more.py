@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0004_alter_location_loc_short_name'),
+        ("core", "0004_alter_location_loc_short_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='location',
-            name='created_at',
+            model_name="location",
+            name="created_at",
             field=models.DateTimeField(auto_now_add=True),
         ),
         migrations.AlterField(
-            model_name='location',
-            name='loc_short_name',
+            model_name="location",
+            name="loc_short_name",
             field=models.CharField(max_length=20),
         ),
         migrations.AlterField(
-            model_name='location',
-            name='updated_at',
+            model_name="location",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

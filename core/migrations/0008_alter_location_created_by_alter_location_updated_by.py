@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0007_alter_location_created_by_alter_location_updated_by'),
+        ("core", "0007_alter_location_created_by_alter_location_updated_by"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='location',
-            name='created_by',
+            model_name="location",
+            name="created_by",
             field=models.CharField(blank=True, max_length=10),
         ),
         migrations.AlterField(
-            model_name='location',
-            name='updated_by',
+            model_name="location",
+            name="updated_by",
             field=models.CharField(blank=True, max_length=10),
         ),
     ]

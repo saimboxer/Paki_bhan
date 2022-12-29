@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0011_alter_location_created_by_alter_location_updated_by_and_more'),
+        ("core", "0011_alter_location_created_by_alter_location_updated_by_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='routedetail',
-            name='arrive_in_min',
+            model_name="routedetail",
+            name="arrive_in_min",
             field=models.IntegerField(default=0),
         ),
     ]

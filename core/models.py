@@ -8,29 +8,35 @@ from django.utils.translation import gettext_lazy as _
 
 class Country(models.Model):
     """
-        `ISO 3166 Country Codes <https://www.iso.org/iso-3166-country-codes.html>`_
-        The field names are a bit awkward, but kept for backwards compatibility.
-        pycountry's syntax of alpha2, alpha3, name and official_name seems sane.
-        """
+    `ISO 3166 Country Codes <https://www.iso.org/iso-3166-country-codes.html>`_
+    The field names are a bit awkward, but kept for backwards compatibility.
+    pycountry's syntax of alpha2, alpha3, name and official_name seems sane.
+    """
+
     iso_3166_1_a2 = models.CharField(
-        _('ISO 3166-1 alpha-2'), max_length=2, primary_key=True)
-    iso_3166_1_a3 = models.CharField(
-        _('ISO 3166-1 alpha-3'), max_length=3, blank=True)
+        _("ISO 3166-1 alpha-2"), max_length=2, primary_key=True
+    )
+    iso_3166_1_a3 = models.CharField(_("ISO 3166-1 alpha-3"), max_length=3, blank=True)
     iso_3166_1_numeric = models.CharField(
-        _('ISO 3166-1 numeric'), blank=True, max_length=3)
+        _("ISO 3166-1 numeric"), blank=True, max_length=3
+    )
 
     #: The commonly used name; e.g. 'United Kingdom'
-    printable_name = models.CharField(_('Country name'), max_length=128, db_index=True)
+    printable_name = models.CharField(_("Country name"), max_length=128, db_index=True)
     #: The full official name of a country
     #: e.g. 'United Kingdom of Great Britain and Northern Ireland'
-    name = models.CharField(_('Official name'), max_length=128)
+    name = models.CharField(_("Official name"), max_length=128)
 
     display_order = models.PositiveSmallIntegerField(
-        _("Display order"), default=0, db_index=True,
-        help_text=_('Higher the number, higher the country in the list.'))
+        _("Display order"),
+        default=0,
+        db_index=True,
+        help_text=_("Higher the number, higher the country in the list."),
+    )
 
     is_shipping_country = models.BooleanField(
-        _("Is shipping country"), default=False, db_index=True)
+        _("Is shipping country"), default=False, db_index=True
+    )
 
     class Meta:
         verbose_name = _("country")
@@ -65,11 +71,19 @@ class City(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_created_city", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_created_city",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_updated_city", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_updated_city",
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -81,22 +95,30 @@ class City(models.Model):
 
 
 class Vehicle(models.Model):
-    VEHICLE_TYPE_CHOICES = (("Bus", "Bus"),
-                            ("Train", "Train"),
-                            ("Tram", "Tram"))
+    VEHICLE_TYPE_CHOICES = (("Bus", "Bus"), ("Train", "Train"), ("Tram", "Tram"))
 
     reg_number = models.CharField(max_length=100)
-    vehicle_type = models.CharField(max_length=5, choices=VEHICLE_TYPE_CHOICES, default='Bus')
+    vehicle_type = models.CharField(
+        max_length=5, choices=VEHICLE_TYPE_CHOICES, default="Bus"
+    )
     vhcl_capacity = models.IntegerField()
     is_cyclespace_available = models.BooleanField(default=True)
     is_toilet_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_created_vehicle", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_created_vehicle",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_updated_vehicle", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_updated_vehicle",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
@@ -104,23 +126,34 @@ class Vehicle(models.Model):
 
 
 class VehicleClass(models.Model):
-    CLASS_TYPE_CHOICES = (("GEN", "General"),
-                          ("SLPR", "Sleeper"),
-                          ("1AC", "1AC"),
-                          ("2AC", "2AC"),
-                          ("3AC", "3AC"))
+    CLASS_TYPE_CHOICES = (
+        ("GEN", "General"),
+        ("SLPR", "Sleeper"),
+        ("1AC", "1AC"),
+        ("2AC", "2AC"),
+        ("3AC", "3AC"),
+    )
 
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     class_type = models.CharField(max_length=5, choices=CLASS_TYPE_CHOICES)
     capacity = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_created_vehicleclass", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_created_vehicleclass",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_updated_vehicleclass", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_updated_vehicleclass",
+        blank=True,
+        null=True,
     )
+
     def __str__(self):
         return self.vehicle
 
@@ -134,8 +167,7 @@ class Location(models.Model):
         STOP = "stop"
         STATION = "station"
 
-    LOCATION_TYPE_CHOICES = ((TYPE.STOP, "Stop"),
-                             (TYPE.STATION, "Train Station"))
+    LOCATION_TYPE_CHOICES = ((TYPE.STOP, "Stop"), (TYPE.STATION, "Train Station"))
 
     name = models.CharField(max_length=100)
     loc_short_name = models.CharField(max_length=20, blank=True)
@@ -145,11 +177,19 @@ class Location(models.Model):
     long = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_created_location", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_created_location",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_updated_location", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_updated_location",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
@@ -163,11 +203,19 @@ class Platform(models.Model):
     lat = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_created_platform", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_created_platform",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_updated_platform", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_updated_platform",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
@@ -179,11 +227,19 @@ class Route(models.Model):
     code = models.CharField(max_length=20)  # from_Loc_sn - to_Loc_sn
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_created_route", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_created_route",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_updated_route", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_updated_route",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
@@ -194,21 +250,29 @@ class RouteDetail(models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     order = models.IntegerField()
-    arrive_in_min = models.IntegerField(default = 0)
+    arrive_in_min = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_created_routedetail", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_created_routedetail",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_updated_routedetail", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_updated_routedetail",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
         return self.route.name
 
     class Meta:
-        unique_together = (('route', 'location'),)
+        unique_together = (("route", "location"),)
 
 
 class VehicleSchedule(models.Model):
@@ -218,11 +282,19 @@ class VehicleSchedule(models.Model):
     est_start_time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_created_vehicleschedule", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_created_vehicleschedule",
+        blank=True,
+        null=True,
     )
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_updated_vehicleschedule", blank=True, null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name="user_updated_vehicleschedule",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):

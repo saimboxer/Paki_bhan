@@ -9,18 +9,30 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('core', '0008_alter_location_created_by_alter_location_updated_by'),
+        ("core", "0008_alter_location_created_by_alter_location_updated_by"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='city',
-            name='created_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='user_created_city', to=settings.AUTH_USER_MODEL),
+            model_name="city",
+            name="created_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="user_created_city",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='city',
-            name='updated_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='user_updated_city', to=settings.AUTH_USER_MODEL),
+            model_name="city",
+            name="updated_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="user_updated_city",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

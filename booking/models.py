@@ -1,14 +1,20 @@
-from django.contrib.auth.models import User
-from django.db import models
+from django.contrib.auth.models import (
+    User,
+)  # imported by apps/oauth/services/OTPAuth.py
+from django.db import models  # imported by apps/oauth/services/OTPAuth.py
 
 from core.models import Location, Vehicle, VehicleClass
 
 
 class Ticket(models.Model):
-    pnr_no = models.CharField(max_length=20, unique = True)
+    pnr_no = models.CharField(max_length=20, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    dep_location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='departure_tickets')
-    arrival_location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='arrival_tickets')
+    dep_location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, related_name="departure_tickets"
+    )
+    arrival_location = models.ForeignKey(
+        Location, on_delete=models.CASCADE, related_name="arrival_tickets"
+    )
     traveller = models.CharField(max_length=100)
     journey_datetime = models.DateTimeField()
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
