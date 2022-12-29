@@ -1,6 +1,11 @@
 from numpy import source
 from rest_framework import serializers
 from .models import *     
+from datetime import datetime
+
+now = datetime.now() # current date and time
+
+
 
 class LocationSerializer(serializers.ModelSerializer):
     
@@ -69,25 +74,26 @@ class RouteStopDetailSerializer(serializers.ModelSerializer):
 
 class StopRoutDetailSerializer(serializers.ModelSerializer):
     routename = serializers.CharField(source='route.name')
-    
-    #last_stop = serializers.SerializerMethodField('get_arrival_info')
+    last_stop = serializers.SerializerMethodField()
+    today = serializers.SerializerMethodField()
+    time = serializers.SerializerMethodField()
+    #est_strt_time = serializers.SerializerMethodField()
 
-    print('#########################555555###########')
-    print('#########################555555###########')
-    print('#########################555555###########')
-    print('#########################555555###########')
-    print('#########################555555###########')
-  #  print(route)
+    def get_time(self, obj):
+        time_obj = now.strftime("%H:%M:%S")
+        return time_obj
 
-    #def get_arrival_info(self, obj):
-    #        arrival_stop = RouteDetail.objects.filter(route = route).last()
-    #        arrival_stop = RoutDetailSerializer(arrival_stop)
-    #
-    #        return arrival_stop.data  
-    
+    def get_today(self, obj):
+        today_obj = now.strftime("%A")
+        return today_obj
+
+    def get_last_stop(self, obj):
+        last_route_obj = RouteDetail.objects.filter(route__name=obj.route).order_by('-order').first()
+        return  last_route_obj.location.name
+
     class Meta:
         model = RouteDetail
-        fields = ('arrive_in_min', 'routename', 'route', )               
+        fields = ('arrive_in_min', 'routename', 'route', 'last_stop', 'today', 'time', )               
 
 
 class StopDetailSerializer(serializers.ModelSerializer):
@@ -95,11 +101,26 @@ class StopDetailSerializer(serializers.ModelSerializer):
     vehicle_schedule = serializers.SerializerMethodField('get_route_list')
     def get_route_list(self, obj):
             pstopid = self.context.get("pstopid")
+            vnow = datetime.now()
+
             route_list = RouteDetail.objects.filter(location=pstopid)
-            route_list = StopRoutDetailSerializer(route_list, many=True)
+            route_ids = [r.route.id for r in route_list]
+            active_schedules = VehicleSchedule.objects.filter(
+                day=vnow.strftime("%A"), est_start_time__gt= vnow,
+                route_id__in=route_ids
+                    )
+            active_route_ids = [r.route.id for r in active_schedules]
+            final_list = route_list.filter(route_id__in=active_route_ids)
+            route_list = StopRoutDetailSerializer(final_list, many=True)
             return route_list.data
 
     class Meta:
         model = Location
         fields = ('id','name','loc_type','lat','long','vehicle_schedule')
 
+
+class RouteDetailSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = RouteDetail
+        fields = ('__all__')

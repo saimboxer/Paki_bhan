@@ -46,8 +46,12 @@ class BusSchedule(APIView):
             arrive_at = start_time + timedelta(minutes=int(stop.get("arrive_in_min")))
             arrive_at = datetime.strftime(arrive_at,date_format_str)
             stop["arrive_at"] = arrive_at
+        resp = {
+            "status": "success",
+            "data": serializer.data
+        }
 
-        return Response(serializer.data)
+        return Response(resp)
 
     ## stop detail Api##
 class stopdetail(APIView):
@@ -55,4 +59,16 @@ class stopdetail(APIView):
     def get(self, request, stopid, **kwargs):
         stoplist =  Location.objects.get(id=stopid)
         serializer = StopDetailSerializer(stoplist, many=False, context={"pstopid": stopid})        
+        resp = {
+            "status": "success",
+            "data": serializer.data
+        }
+        
+        return Response(resp)
+
+class TripSchedule(APIView):
+
+    def post(self, request, pfrom, pto, **kwargs):
+        buseslist = RouteDetail.objects.raw('select distinct route_id, id from core_RouteDetail where location_id in (5,7);')
+        serializer = RouteDetailSerializer(buseslist, many=True)
         return Response(serializer.data)

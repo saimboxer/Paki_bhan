@@ -9,5 +9,6 @@ urlpatterns = [
     path('stopbylatlong/<str:plat>/<str:plong>', stopByLatLong.as_view(), name='StopBylatlong'),
     path('bus/<str:pk>', Bus.as_view(), name='bus'),
     path('busSchedule/<str:pk>', BusSchedule.as_view(), name='buschedule'),
+    path('tripschedule/<str:pfrom>/<str:pto>', TripSchedule.as_view(), name='tripschedule'),
     
 ]
